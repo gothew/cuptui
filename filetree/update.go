@@ -29,7 +29,11 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 		case key.Matches(msg, submitInputKey):
 			switch b.state {
 			case createDirectoryState:
-				cmds = append(cmds, tea.Sequentially(
+        statusCmd := b.list.NewStatusMessage(
+          statusMessageInfoStyle("Successfully created directory"),
+        )
+
+				cmds = append(cmds, statusCmd, tea.Sequentially(
 					createDirectoryCmd(b.input.Value()),
 				))
 			}

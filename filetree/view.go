@@ -15,6 +15,6 @@ func (b Bubble) View() string {
 	}
 
 	return bubbleStyle.Render(
-		lipgloss.JoinVertical(lipgloss.Top, inputStyle.Render(inputView)),
+		lipgloss.JoinVertical(lipgloss.Top, b.list.View(), inputStyle.Render(inputView)),
 	)
 }

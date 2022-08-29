@@ -7,4 +7,5 @@ import (
 var (
 	bubbleStyle = lipgloss.NewStyle().PaddingLeft(1).PaddingRight(1).BorderStyle(lipgloss.NormalBorder())
 	inputStyle  = lipgloss.NewStyle().PaddingTop(1)
+  statusMessageInfoStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "#04B575", Dark: "#04B575"}).Render
 )
