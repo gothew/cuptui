@@ -21,13 +21,25 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 
 				return b, textinput.Blink
 			}
+    case key.Matches(msg, renameItemKey):
+      if !b.input.Focused() {
+        b.input.Focus()
+        b.input.Placeholder = "Enter new name"
+        b.state = renameItemState
+
+        return b, textinput.Blink
+      }
 		case key.Matches(msg, escapeKey):
+      b.state = idleState
+
 			if b.input.Focused() {
 				b.input.Reset()
 				b.input.Blur()
 			}
 		case key.Matches(msg, submitInputKey):
 			switch b.state {
+      case idleState:
+        return b, nil
 			case createDirectoryState:
         statusCmd := b.list.NewStatusMessage(
           statusMessageInfoStyle("Successfully created directory"),
@@ -36,7 +48,16 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 				cmds = append(cmds, statusCmd, tea.Sequentially(
 					createDirectoryCmd(b.input.Value()),
 				))
+      case renameItemState:
+        statusCmd := b.list.NewStatusMessage(
+          statusMessageInfoStyle("Successfully renamed"),
+        )
+
+        cmds = append(cmds, statusCmd, tea.Sequentially(
+          renameItemCmd("hola", b.input.Value()),
+        ))
 			}
+
 			b.state = idleState
 			b.input.Blur()
 			b.input.Reset()
@@ -44,7 +65,9 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	}
 
 	switch b.state {
-	case createDirectoryState:
+  case idleState:
+    b.list, cmd = b.list.Update(msg)
+	case createDirectoryState, renameItemState:
 		b.input, cmd = b.input.Update(msg)
 		cmds = append(cmds, cmd)
 	}
