@@ -12,6 +12,9 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
+  case tea.WindowSizeMsg:
+    b.width = msg.Width
+    b.height = msg.Height
 	case getDirectoryListingMsg:
 		if msg != nil {
 			cmd = b.list.SetItems(msg)

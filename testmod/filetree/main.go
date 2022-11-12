@@ -38,6 +38,8 @@ func (b Bubble) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	)
 
 	switch msg := msg.(type) {
+  case tea.WindowSizeMsg:
+    b.filetree.SetSize(msg.Width, msg.Height)
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c":

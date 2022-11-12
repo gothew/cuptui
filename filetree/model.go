@@ -22,6 +22,8 @@ type Bubble struct {
 	input         textinput.Model
 	showHidden    bool
 	showIcons     bool
+	width         int
+	height        int
 	startDir      string
 	selectionPath string
 	delegate      list.DefaultDelegate
@@ -35,11 +37,11 @@ func New(
 	listDelegate.Styles.SelectedTitle = listDelegate.Styles.SelectedTitle.Copy().
 		Foreground(selectedItemColor).
 		BorderLeftForeground(selectedItemColor)
-    listDelegate.Styles.SelectedDesc = listDelegate.Styles.SelectedTitle.Copy()
+	listDelegate.Styles.SelectedDesc = listDelegate.Styles.SelectedTitle.Copy()
 
 	listModel := list.New([]list.Item{}, listDelegate, 0, 0)
 	listModel.Title = "Filetree"
-  listModel.Styles.Title = listModel.Styles.Title.Copy().
+	listModel.Styles.Title = listModel.Styles.Title.Copy().
 		Bold(true).
 		Italic(true).
 		Background(titleBackgroundColor).
@@ -68,7 +70,7 @@ func New(
 	input.CharLimit = 250
 	input.Width = 50
 
-  bubbleStyle = bubbleStyle.Copy().BorderForeground(borderColor)
+	bubbleStyle = bubbleStyle.Copy().BorderForeground(borderColor)
 
 	return Bubble{
 		list:          listModel,
