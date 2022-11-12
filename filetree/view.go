@@ -8,7 +8,9 @@ func (b Bubble) View() string {
 	var inputView string
 
 	switch b.state {
-	case createDirectoryState:
+	case idleState:
+		inputView = ""
+	case createDirectoryState, renameItemState:
 		inputView = b.input.View()
 	default:
 		inputView = ""

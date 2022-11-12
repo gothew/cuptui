@@ -4,6 +4,7 @@ import (
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/karchx/cuptui/filetree"
 )
 
@@ -12,7 +13,14 @@ type Bubble struct {
 }
 
 func New() Bubble {
-	filetreeModel := filetree.New()
+	filetreeModel := filetree.New(
+		"",
+		"",
+		lipgloss.AdaptiveColor{Light: "#000000", Dark: "63"},
+		lipgloss.AdaptiveColor{Light: "#000000", Dark: "63"},
+		lipgloss.AdaptiveColor{Light: "63", Dark: "63"},
+		lipgloss.AdaptiveColor{Light: "#ffffff", Dark: "#ffffff"},
+	)
 
 	return Bubble{
 		filetree: filetreeModel,
@@ -34,8 +42,8 @@ func (b Bubble) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "ctrl+c":
 			cmds = append(cmds, tea.Quit)
-    case "q":
-      cmds = append(cmds, tea.Quit)
+		case "q":
+			cmds = append(cmds, tea.Quit)
 		}
 	}
 

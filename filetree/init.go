@@ -3,6 +3,7 @@ package filetree
 import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/karchx/cuptui/dirfs"
 )
 
 func (b Bubble) Init() tea.Cmd {
@@ -10,6 +11,12 @@ func (b Bubble) Init() tea.Cmd {
 		cmd  tea.Cmd
 		cmds []tea.Cmd
 	)
+
+  if b.startDir == "" {
+    cmd = getDirectoryListingCmd(dirfs.CurrentDirectory, b.showHidden, b.showIcons)
+  } else {
+    cmd = getDirectoryListingCmd(b.startDir, b.showHidden, b.showIcons)
+  }
 
 	cmds = append(cmds, cmd, textinput.Blink)
 
