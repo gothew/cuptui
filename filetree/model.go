@@ -11,6 +11,7 @@ type sessionState int
 
 const (
 	idleState sessionState = iota
+  createFileState
 	createDirectoryState
 	renameItemState
 )

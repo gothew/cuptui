@@ -12,9 +12,9 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
-  case tea.WindowSizeMsg:
-    b.width = msg.Width
-    b.height = msg.Height
+	case tea.WindowSizeMsg:
+		b.width = msg.Width
+		b.height = msg.Height
 	case getDirectoryListingMsg:
 		if msg != nil {
 			cmd = b.list.SetItems(msg)
@@ -24,6 +24,14 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	case tea.KeyMsg:
 
 		switch {
+		case key.Matches(msg, createFileKey):
+			if !b.input.Focused() {
+				b.input.Focus()
+				b.input.Placeholder = "Enter name of new file"
+				b.state = createFileState
+
+				return b, textinput.Blink
+			}
 		case key.Matches(msg, createDirectoryKey):
 			if !b.input.Focused() {
 				b.input.Focus()
@@ -53,6 +61,16 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 			switch b.state {
 			case idleState:
 				return b, nil
+			case createFileState:
+				statusCmd := b.list.NewStatusMessage(
+					statusMessageInfoStyle("Successfully created file"),
+				)
+
+				cmds = append(cmds, statusCmd, tea.Sequentially(
+					createFileCmd(b.input.Value()),
+					getDirectoryListingCmd(dirfs.CurrentDirectory, b.showHidden, b.showIcons),
+				))
+
 			case createDirectoryState:
 				statusCmd := b.list.NewStatusMessage(
 					statusMessageInfoStyle("Successfully created directory"),
@@ -82,7 +100,7 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	switch b.state {
 	case idleState:
 		b.list, cmd = b.list.Update(msg)
-	case createDirectoryState, renameItemState:
+	case createFileState, createDirectoryState, renameItemState:
 		b.input, cmd = b.input.Update(msg)
 		cmds = append(cmds, cmd)
 	}

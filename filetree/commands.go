@@ -21,10 +21,10 @@ func getDirectoryListingCmd(directoryName string, showHidden, showIcons bool) te
 		var items []list.Item
 
 		if directoryName == dirfs.HomeDirectory {
-      directoryName, err = dirfs.GetHomeDirectory()
-      if err != nil {
-        return errorMessage(err)
-      }
+			directoryName, err = dirfs.GetHomeDirectory()
+			if err != nil {
+				return errorMessage(err)
+			}
 		}
 
 		directoryInfo, err := os.Stat(directoryName)
@@ -46,10 +46,10 @@ func getDirectoryListingCmd(directoryName string, showHidden, showIcons bool) te
 			return errorMessage(err)
 		}
 
-    workingDirectory, err := dirfs.GetWorkingDirectory()
-    if err != nil {
-      return errorMessage(err)
-    }
+		workingDirectory, err := dirfs.GetWorkingDirectory()
+		if err != nil {
+			return errorMessage(err)
+		}
 
 		items = append(items, Item{
 			title:            dirfs.PreviousDirectory,
@@ -74,7 +74,6 @@ func getDirectoryListingCmd(directoryName string, showHidden, showIcons bool) te
 				fileInfo.Mode().String(),
 				"working...")
 
-
 			items = append(items, Item{
 				title:            file.Name(),
 				desc:             status,
@@ -88,6 +87,16 @@ func getDirectoryListingCmd(directoryName string, showHidden, showIcons bool) te
 			})
 		}
 		return getDirectoryListingMsg(items)
+	}
+}
+
+func createFileCmd(name string) tea.Cmd {
+	return func() tea.Msg {
+		if err := dirfs.CreateFile(name); err != nil {
+			return errorMessage(err)
+		}
+
+		return nil
 	}
 }
 
