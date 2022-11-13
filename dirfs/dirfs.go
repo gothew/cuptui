@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -64,7 +65,6 @@ func GetDirectoryListing(dir string, showHidden bool) ([]fs.DirEntry, error) {
 		files = files[:index]
 	}
 
-
 	return files, nil
 }
 
@@ -79,10 +79,24 @@ func GetHomeDirectory() (string, error) {
 
 // GetWorkingDirectory returns the current working directory.
 func GetWorkingDirectory() (string, error) {
-  workingDir, err := os.Getwd()
-  if err != nil {
-    return "", errors.Unwrap(err)
-  }
+	workingDir, err := os.Getwd()
+	if err != nil {
+		return "", errors.Unwrap(err)
+	}
 
-  return workingDir, nil
+	return workingDir, nil
+}
+
+// CreateFile creates a file given a name.
+func CreateFile(name string) error {
+	f, err := os.Create(filepath.Clean(name))
+	if err != nil {
+		return errors.Unwrap(err)
+	}
+
+	if err = f.Close(); err != nil {
+		return errors.Unwrap(err)
+	}
+
+	return errors.Unwrap(err)
 }
