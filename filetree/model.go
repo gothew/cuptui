@@ -50,6 +50,7 @@ func New(
 	listModel.DisableQuitKeybindings()
 	listModel.AdditionalShortHelpKeys = func() []key.Binding {
 		return []key.Binding{
+      openDirectoryKey,
 			createDirectoryKey,
 			escapeKey,
 			renameItemKey,
@@ -58,6 +59,7 @@ func New(
 	}
 	listModel.AdditionalFullHelpKeys = func() []key.Binding {
 		return []key.Binding{
+      openDirectoryKey,
 			createDirectoryKey,
 			escapeKey,
 			renameItemKey,
