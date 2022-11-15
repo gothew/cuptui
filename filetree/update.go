@@ -24,11 +24,11 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	case tea.KeyMsg:
 
 		switch {
-    case key.Matches(msg, openDirectoryKey):
-      if !b.input.Focused() {
-        selectedDir := b.GetSelectedItem()
-        cmds = append(cmds, getDirectoryListingCmd(selectedDir.fileName, b.showHidden, b.showIcons))
-      }
+		case key.Matches(msg, openDirectoryKey):
+			if !b.input.Focused() {
+				selectedDir := b.GetSelectedItem()
+				cmds = append(cmds, getDirectoryListingCmd(selectedDir.fileName, b.showHidden, b.showIcons))
+			}
 		case key.Matches(msg, createFileKey):
 			if !b.input.Focused() {
 				b.input.Focus()

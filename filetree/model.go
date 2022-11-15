@@ -11,7 +11,7 @@ type sessionState int
 
 const (
 	idleState sessionState = iota
-  createFileState
+	createFileState
 	createDirectoryState
 	renameItemState
 )
@@ -50,7 +50,7 @@ func New(
 	listModel.DisableQuitKeybindings()
 	listModel.AdditionalShortHelpKeys = func() []key.Binding {
 		return []key.Binding{
-      openDirectoryKey,
+			openDirectoryKey,
 			createDirectoryKey,
 			escapeKey,
 			renameItemKey,
@@ -59,7 +59,7 @@ func New(
 	}
 	listModel.AdditionalFullHelpKeys = func() []key.Binding {
 		return []key.Binding{
-      openDirectoryKey,
+			openDirectoryKey,
 			createDirectoryKey,
 			escapeKey,
 			renameItemKey,
