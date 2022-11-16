@@ -68,6 +68,13 @@ func GetDirectoryListing(dir string, showHidden bool) ([]fs.DirEntry, error) {
 	return files, nil
 }
 
+// DeleteDirectory deletes a directory given a name.
+func DeleteDirectory(name string) error {
+	err := os.RemoveAll(name)
+
+	return errors.Unwrap(err)
+}
+
 // GetHomeDirectory returns the users home directory.
 func GetHomeDirectory() (string, error) {
 	home, err := os.UserHomeDir()
@@ -85,6 +92,30 @@ func GetWorkingDirectory() (string, error) {
 	}
 
 	return workingDir, nil
+}
+
+// DeleteFile deletes a file given a name.
+func DeleteFile(name string) error {
+	err := os.Remove(name)
+
+	return errors.Unwrap(err)
+}
+
+// MoveDirectoryItem moves a file from one place to another.
+func MoveDirectoryItem(src, dst string) error {
+	err := os.Rename(src, dst)
+	return errors.Unwrap(err)
+}
+
+// ReadFileContent returns the contents of a file given a name.
+func ReadFileContent(name string) (string, error) {
+	fileContent, err := os.ReadFile(filepath.Clean(name))
+
+	if err != nil {
+		return "", errors.Unwrap(err)
+	}
+
+	return string(fileContent), nil
 }
 
 // CreateFile creates a file given a name.
