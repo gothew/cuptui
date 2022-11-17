@@ -52,7 +52,7 @@ func New(
 		return []key.Binding{
 			openDirectoryKey,
 			createDirectoryKey,
-      createFileKey,
+			createFileKey,
 			escapeKey,
 			renameItemKey,
 			submitInputKey,
@@ -62,7 +62,7 @@ func New(
 		return []key.Binding{
 			openDirectoryKey,
 			createDirectoryKey,
-      createFileKey,
+			createFileKey,
 			escapeKey,
 			renameItemKey,
 			submitInputKey,
