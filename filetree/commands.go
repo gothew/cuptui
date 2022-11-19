@@ -72,7 +72,7 @@ func getDirectoryListingCmd(directoryName string, showHidden, showIcons bool) te
 			status := fmt.Sprintf("%s %s %s",
 				fileInfo.ModTime().Format("2006-01-02 15:04:05"),
 				fileInfo.Mode().String(),
-				"working...")
+				ConvertBytesToSizeString(fileInfo.Size()))
 
 			items = append(items, Item{
 				title:            file.Name(),
