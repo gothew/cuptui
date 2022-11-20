@@ -48,16 +48,16 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 			}
 		case moveItemState:
 			if msg.String() == enterKey {
-				statusCmd := b.list.NewStatusMessage(statusMessageInfoStyle("SUccessfully moved item"))
+				statusCmd := b.list.NewStatusMessage(statusMessageInfoStyle("Successfully moved item"))
 
-        cmds = append(cmds, statusCmd, tea.Sequentially(
-          moveItemCmd(b.itemToMove.path, b.itemToMove.shortName),
-          getDirectoryListingCmd(dirfs.CurrentDirectory, b.showHidden, b.showIcons),
-        ))
+				cmds = append(cmds, statusCmd, tea.Sequentially(
+					moveItemCmd(b.itemToMove.path, b.itemToMove.shortName),
+					getDirectoryListingCmd(dirfs.CurrentDirectory, b.showHidden, b.showIcons),
+				))
 
-        b.state = idleState
+				b.state = idleState
 
-        return b, tea.Batch(cmds...)
+				return b, tea.Batch(cmds...)
 			}
 		}
 
@@ -89,6 +89,17 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 
 				return b, nil
 			}
+		case key.Matches(msg, moveItemKey):
+			if !b.input.Focused() {
+				selectedItem := b.GetSelectedItem()
+				b.state = moveItemState
+				b.itemToMove = itemToMove{
+					shortName: selectedItem.shortName,
+					path:      selectedItem.fileName,
+				}
+
+				return b, nil
+			}
 		case key.Matches(msg, renameItemKey):
 			if !b.input.Focused() {
 				b.input.Focus()
@@ -108,7 +119,7 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 			selectedItem := b.GetSelectedItem()
 
 			switch b.state {
-			case idleState, deleteItemState:
+			case idleState, deleteItemState, moveItemState:
 				return b, nil
 			case createFileState:
 				statusCmd := b.list.NewStatusMessage(

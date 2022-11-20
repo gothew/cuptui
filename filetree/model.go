@@ -64,6 +64,7 @@ func New(
 			deleteItemKey,
 			escapeKey,
 			renameItemKey,
+			moveItemKey,
 			submitInputKey,
 		}
 	}
@@ -75,6 +76,7 @@ func New(
 			deleteItemKey,
 			escapeKey,
 			renameItemKey,
+			moveItemKey,
 			submitInputKey,
 		}
 	}
