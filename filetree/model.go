@@ -13,9 +13,15 @@ const (
 	idleState sessionState = iota
 	createFileState
 	createDirectoryState
-  deleteItemState
+	deleteItemState
+	moveItemState
 	renameItemState
 )
+
+type itemToMove struct {
+	shortName string
+	path      string
+}
 
 // Bubble represents the properties of a filetree
 type Bubble struct {
@@ -28,6 +34,7 @@ type Bubble struct {
 	height        int
 	startDir      string
 	selectionPath string
+	itemToMove    itemToMove
 	delegate      list.DefaultDelegate
 }
 
@@ -54,7 +61,7 @@ func New(
 			openDirectoryKey,
 			createDirectoryKey,
 			createFileKey,
-      deleteItemKey,
+			deleteItemKey,
 			escapeKey,
 			renameItemKey,
 			submitInputKey,
@@ -65,7 +72,7 @@ func New(
 			openDirectoryKey,
 			createDirectoryKey,
 			createFileKey,
-      deleteItemKey,
+			deleteItemKey,
 			escapeKey,
 			renameItemKey,
 			submitInputKey,

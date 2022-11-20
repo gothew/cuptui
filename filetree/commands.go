@@ -90,6 +90,21 @@ func getDirectoryListingCmd(directoryName string, showHidden, showIcons bool) te
 	}
 }
 
+// moveItemCmd moves files to the current directory
+func moveItemCmd(path, name string) tea.Cmd {
+	return func() tea.Msg {
+		workingDir, err := dirfs.GetWorkingDirectory()
+		if err != nil {
+			return errorMessage(err)
+		}
+
+		if err := dirfs.MoveDirectoryItem(path, fmt.Sprintf("%s/%s", workingDir, name)); err != nil {
+			return errorMessage(err)
+		}
+		return nil
+	}
+}
+
 func createFileCmd(name string) tea.Cmd {
 	return func() tea.Msg {
 		if err := dirfs.CreateFile(name); err != nil {
