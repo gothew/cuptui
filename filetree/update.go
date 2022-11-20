@@ -7,6 +7,10 @@ import (
 	"github.com/karchx/cuptui/dirfs"
 )
 
+const (
+  yesKey = "y"
+)
+
 func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	var cmd tea.Cmd
 	var cmds []tea.Cmd
@@ -22,6 +26,26 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 		}
 
 	case tea.KeyMsg:
+
+    switch b.state {
+    case deleteItemState:
+      if msg.String() == yesKey {
+        selectedItem := b.GetSelectedItem()
+
+        statusCmd := b.list.NewStatusMessage(
+          statusMessageInfoStyle("Successfully deleted item"),
+        )
+
+        cmds = append(cmds, statusCmd, tea.Sequentially(
+          deleteItemCmd(selectedItem.fileName),
+          getDirectoryListingCmd(dirfs.CurrentDirectory, b.showHidden, b.showIcons),
+        ))
+
+        b.state = idleState
+
+        return b, tea.Batch(cmds...)
+      }
+    }
 
 		switch {
 		case key.Matches(msg, openDirectoryKey):
@@ -45,6 +69,12 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 
 				return b, textinput.Blink
 			}
+		case key.Matches(msg, deleteItemKey):
+			if !b.input.Focused() {
+				b.state = deleteItemState
+
+				return b, nil
+			}
 		case key.Matches(msg, renameItemKey):
 			if !b.input.Focused() {
 				b.input.Focus()
@@ -64,7 +94,7 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 			selectedItem := b.GetSelectedItem()
 
 			switch b.state {
-			case idleState:
+			case idleState, deleteItemState:
 				return b, nil
 			case createFileState:
 				statusCmd := b.list.NewStatusMessage(
@@ -108,6 +138,8 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 	case createFileState, createDirectoryState, renameItemState:
 		b.input, cmd = b.input.Update(msg)
 		cmds = append(cmds, cmd)
+  case deleteItemState:
+    return b, nil
 	}
 	return b, tea.Batch(cmds...)
 }

@@ -110,6 +110,28 @@ func createDirectoryCmd(name string) tea.Cmd {
 	}
 }
 
+// deleteItemCmd deletes a directory based on the name provided.
+func deleteItemCmd(name string) tea.Cmd {
+	return func() tea.Msg {
+		fileInfo, err := os.Lstat(name)
+		if err != nil {
+			return errorMessage(err)
+		}
+
+		if fileInfo.IsDir() {
+			if err := dirfs.DeleteDirectory(name); err != nil {
+				return errorMessage(err)
+			}
+		} else {
+			if err := dirfs.DeleteFile(name); err != nil {
+				return errorMessage(err)
+			}
+		}
+
+		return nil
+	}
+}
+
 // renameItemCmd renames a file or directory based on the name and value
 // provided.
 func renameItemCmd(name, value string) tea.Cmd {

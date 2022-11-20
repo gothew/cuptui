@@ -13,6 +13,7 @@ const (
 	idleState sessionState = iota
 	createFileState
 	createDirectoryState
+  deleteItemState
 	renameItemState
 )
 
@@ -53,6 +54,7 @@ func New(
 			openDirectoryKey,
 			createDirectoryKey,
 			createFileKey,
+      deleteItemKey,
 			escapeKey,
 			renameItemKey,
 			submitInputKey,
@@ -63,6 +65,7 @@ func New(
 			openDirectoryKey,
 			createDirectoryKey,
 			createFileKey,
+      deleteItemKey,
 			escapeKey,
 			renameItemKey,
 			submitInputKey,
