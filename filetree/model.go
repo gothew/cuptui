@@ -30,6 +30,7 @@ type Bubble struct {
 	input         textinput.Model
 	showHidden    bool
 	showIcons     bool
+	active        bool
 	width         int
 	height        int
 	startDir      string
@@ -40,6 +41,7 @@ type Bubble struct {
 
 // New create a new instance of a filetree.
 func New(
+	active bool,
 	startDir, selectionPath string,
 	borderColor, selectedItemColor, titleBackgroundColor, titleForegroundColor lipgloss.AdaptiveColor) Bubble {
 	listDelegate := list.NewDefaultDelegate()
@@ -94,6 +96,7 @@ func New(
 		input:         input,
 		showHidden:    true,
 		showIcons:     false,
+		active:        active,
 		state:         idleState,
 		startDir:      startDir,
 		selectionPath: selectionPath,

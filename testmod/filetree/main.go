@@ -14,6 +14,7 @@ type Bubble struct {
 
 func New() Bubble {
 	filetreeModel := filetree.New(
+		true,
 		"",
 		"",
 		lipgloss.AdaptiveColor{Light: "#000000", Dark: "63"},
@@ -38,8 +39,8 @@ func (b Bubble) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	)
 
 	switch msg := msg.(type) {
-  case tea.WindowSizeMsg:
-    b.filetree.SetSize(msg.Width, msg.Height)
+	case tea.WindowSizeMsg:
+		b.filetree.SetSize(msg.Width, msg.Height)
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c":
