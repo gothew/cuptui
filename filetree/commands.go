@@ -105,6 +105,7 @@ func moveItemCmd(path, name string) tea.Cmd {
 	}
 }
 
+// createFileCmd creates a file based on the name provided.
 func createFileCmd(name string) tea.Cmd {
 	return func() tea.Msg {
 		if err := dirfs.CreateFile(name); err != nil {

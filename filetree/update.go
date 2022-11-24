@@ -27,6 +27,9 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 		}
 
 	case tea.KeyMsg:
+		if !b.active {
+			return b, nil
+		}
 
 		switch b.state {
 		case deleteItemState:
@@ -157,14 +160,18 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 		}
 	}
 
-	switch b.state {
-	case idleState, moveItemState:
-		b.list, cmd = b.list.Update(msg)
-	case createFileState, createDirectoryState, renameItemState:
-		b.input, cmd = b.input.Update(msg)
-		cmds = append(cmds, cmd)
-	case deleteItemState:
-		return b, nil
+	if b.active {
+		switch b.state {
+		case idleState, moveItemState:
+			b.list, cmd = b.list.Update(msg)
+		case createFileState, createDirectoryState, renameItemState:
+			b.input, cmd = b.input.Update(msg)
+			cmds = append(cmds, cmd)
+		case deleteItemState:
+			return b, nil
+		}
+
 	}
+
 	return b, tea.Batch(cmds...)
 }
