@@ -2,10 +2,13 @@ package dirfs
 
 import (
 	"errors"
+	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 // Directory shortcuts.
@@ -126,6 +129,58 @@ func CreateFile(name string) error {
 	}
 
 	if err = f.Close(); err != nil {
+		return errors.Unwrap(err)
+	}
+
+	return errors.Unwrap(err)
+}
+
+// CopyFile copies a file given a name.
+func CopyFile(name string) error {
+	var splitName []string
+	var output string
+
+	srcFile, err := os.Open(filepath.Clean(name))
+	if err != nil {
+		return errors.Unwrap(err)
+	}
+
+	defer func() {
+		err = srcFile.Close()
+	}()
+
+	fileExtension := filepath.Ext(name)
+	splitFileName := strings.Split(name, "/")
+	fileName := splitFileName[len(splitFileName)-1]
+	switch {
+	case strings.HasPrefix(fileName, ".") && fileExtension != "" && fileExtension == fileName:
+		output = fmt.Sprintf("%s_%d", fileName, time.Now().Unix())
+	case strings.HasPrefix(fileName, ".") && fileExtension != "" && fileExtension != fileName:
+		splitName = strings.Split(fileName, ".")
+		output = fmt.Sprintf(".%s_%d.%s", splitName[1], time.Now().Unix(), splitName[2])
+	case fileExtension != "":
+		splitName = strings.Split(fileName, ".")
+		output = fmt.Sprintf("%s_%d.%s", splitName[0], time.Now().Unix(), splitName[1])
+	default:
+		output = fmt.Sprintf("%s_%d", fileName, time.Now().Unix())
+	}
+
+	destFile, err := os.Create(filepath.Clean(output))
+	if err != nil {
+		return errors.Unwrap(err)
+	}
+
+	defer func() {
+		err = destFile.Close()
+	}()
+
+	_, err = io.Copy(destFile, srcFile)
+	if err != nil {
+		return errors.Unwrap(err)
+	}
+
+	err = destFile.Sync()
+	if err != nil {
 		return errors.Unwrap(err)
 	}
 
