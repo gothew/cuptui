@@ -148,6 +148,24 @@ func deleteItemCmd(name string) tea.Cmd {
 	}
 }
 
+// copyItemCmd copies a file or directory given a name.
+func copyItemCmd(name string) tea.Cmd {
+	return func() tea.Msg {
+		fileInfo, err := os.Stat(name)
+		if err != nil {
+			return errorMessage(err)
+		}
+
+		if fileInfo.IsDir() {
+		} else {
+			if err := dirfs.CopyFile(name); err != nil {
+				return errorMessage(err)
+			}
+		}
+		return nil
+	}
+}
+
 // renameItemCmd renames a file or directory based on the name and value
 // provided.
 func renameItemCmd(name, value string) tea.Cmd {

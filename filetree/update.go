@@ -70,6 +70,18 @@ func (b Bubble) Update(msg tea.Msg) (Bubble, tea.Cmd) {
 				selectedDir := b.GetSelectedItem()
 				cmds = append(cmds, getDirectoryListingCmd(selectedDir.fileName, b.showHidden, b.showIcons))
 			}
+		case key.Matches(msg, copyItemKey):
+			if !b.input.Focused() {
+				selectedItem := b.GetSelectedItem()
+				statusCmd := b.list.NewStatusMessage(
+					statusMessageInfoStyle("Successfully copied file"),
+				)
+
+				cmds = append(cmds, statusCmd, tea.Sequentially(
+					copyItemCmd(selectedItem.fileName),
+					getDirectoryListingCmd(dirfs.CurrentDirectory, b.showHidden, b.showIcons),
+				))
+			}
 		case key.Matches(msg, createFileKey):
 			if !b.input.Focused() {
 				b.input.Focus()
