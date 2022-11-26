@@ -186,3 +186,25 @@ func CopyFile(name string) error {
 
 	return errors.Unwrap(err)
 }
+
+// CopyDirectory copies a directory given a name.
+func CopyDirectory(name string) error {
+	output := fmt.Sprintf("%s_%d", name, time.Now().Unix())
+
+	err := filepath.Walk(name, func(path string, info os.FileInfo, err error) error {
+		relPath := strings.Replace(path, name, "", 1)
+
+		if info.IsDir() {
+			return fmt.Errorf("%W", os.Mkdir(filepath.Join(output, relPath), os.ModePerm))
+		}
+
+		var data, err1 = os.ReadFile(filepath.Join(filepath.Clean(name), filepath.Clean(relPath)))
+		if err1 != nil {
+			return errors.Unwrap(err)
+		}
+
+		return fmt.Errorf("%W", os.WriteFile(filepath.Join(output, relPath), data, os.ModePerm))
+	})
+
+	return errors.Unwrap(err)
+}
