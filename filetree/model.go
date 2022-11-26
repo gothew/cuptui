@@ -97,7 +97,7 @@ func New(
 		list:          listModel,
 		input:         input,
 		showHidden:    true,
-		showIcons:     false,
+		showIcons:     true,
 		active:        active,
 		state:         idleState,
 		startDir:      startDir,

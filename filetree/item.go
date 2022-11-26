@@ -1,6 +1,13 @@
 package filetree
 
-import "io/fs"
+import (
+	"fmt"
+	"io/fs"
+	"path/filepath"
+
+	"github.com/charmbracelet/lipgloss"
+	"github.com/karchx/cuptui/icons"
+)
 
 const fileIconWidth = 2
 
@@ -19,6 +26,20 @@ type Item struct {
 
 // Title returns the title of the list item.
 func (i Item) Title() string {
+	if i.fileInfo != nil {
+		icon, color := icons.GetIcon(
+			i.fileInfo.Name(),
+			filepath.Ext(i.fileInfo.Name()),
+			icons.GetIndicator(i.fileInfo.Mode()),
+		)
+		fileIcon := lipgloss.NewStyle().Width(fileIconWidth).Render(fmt.Sprintf("%s%s\033[0m ", color, icon))
+
+		if i.showIcons {
+			return fmt.Sprintf("%s %s", fileIcon, i.title)
+		}
+
+		return i.title
+	}
 	return i.title
 }
 
