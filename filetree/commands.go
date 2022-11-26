@@ -157,6 +157,9 @@ func copyItemCmd(name string) tea.Cmd {
 		}
 
 		if fileInfo.IsDir() {
+			if err := dirfs.CopyDirectory(name); err != nil {
+				return errorMessage(err)
+			}
 		} else {
 			if err := dirfs.CopyFile(name); err != nil {
 				return errorMessage(err)
