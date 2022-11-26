@@ -45,8 +45,6 @@ func (b Bubble) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "ctrl+c":
 			cmds = append(cmds, tea.Quit)
-		case "q":
-			cmds = append(cmds, tea.Quit)
 		}
 	}
 
