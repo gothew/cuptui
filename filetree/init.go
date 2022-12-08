@@ -3,7 +3,7 @@ package filetree
 import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/karchx/cuptui/dirfs"
+	"github.com/gothew/cuptui/dirfs"
 )
 
 func (b Bubble) Init() tea.Cmd {

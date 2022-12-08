@@ -5,7 +5,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/karchx/cuptui/filetree"
+	"github.com/gothew/cuptui/filetree"
 )
 
 type Bubble struct {

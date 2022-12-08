@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/karchx/cuptui/icons"
+	"github.com/gothew/cuptui/icons"
 )
 
 const fileIconWidth = 2

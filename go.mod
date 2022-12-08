@@ -1,4 +1,4 @@
-module github.com/karchx/cuptui
+module github.com/gothew/cuptui
 
 go 1.18
 

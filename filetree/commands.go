@@ -7,7 +7,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/karchx/cuptui/dirfs"
+	"github.com/gothew/cuptui/dirfs"
 )
 
 type getDirectoryListingMsg []list.Item
